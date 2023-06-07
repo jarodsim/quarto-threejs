@@ -53,6 +53,7 @@
       id="loading"
     >
       CARREGANDO MODELOS E TEXTURAS
+      <small id="mensagem"></small>
       <div class="custom-loader"></div>
       <div id="audioContainer">
         <audio
@@ -67,4 +68,25 @@
     <canvas id="myCanvas" class="webgl"></canvas>
     <script type="module" src="./script.js"></script>
   </body>
+  <script>
+    const small = document.getElementById("mensagem");
+    // seta mensagens aleatórias
+    const mensagens = [
+      "Ligue as luzes",
+      "Aumente o volume",
+      "Experimente 'Festa vermelha'",
+    ];
+
+    const interval = setInterval(exibirMensagemAleatoria, 100);
+
+    function exibirMensagemAleatoria() {
+      if (document.getElementById("loading").style.display === "none") {
+        clearInterval(interval);
+        return;
+      }
+      const mensagemAleatoria =
+        mensagens[Math.floor(Math.random() * mensagens.length)];
+      small.textContent = mensagemAleatoria;
+    }
+  </script>
 </html>
