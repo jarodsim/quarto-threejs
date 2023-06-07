@@ -571,23 +571,162 @@ pane
         // Liga o led do pc
         // liga a luz do botão power do pc
         if (ev.value) {
-            ledPowerPCRectAreaLight.visible = true;
-            ledMonitorRectAreaLight.visible = true;
-            ledGabineteRectAreaLight.visible = true;
-            powerPCMaterial.color.setHex(0xff0000);
-            monitor.material = new THREE.MeshBasicMaterial({
-                map: monitorTexture,
-            });;
+            ligarPC()
         } else {
-            ledPowerPCRectAreaLight.visible = false;
-            ledMonitorRectAreaLight.visible = false;
-            ledGabineteRectAreaLight.visible = false;
-            powerPCMaterial.color.setHex(0x0f0000);
-            monitor.material = new THREE.MeshBasicMaterial({
-                color: 0x000000
-            });;
+            desligarPC()
         }
     });
+
+function ligarPC() {
+    ledPowerPCRectAreaLight.visible = true;
+    ledMonitorRectAreaLight.visible = true;
+    ledGabineteRectAreaLight.visible = true;
+    powerPCMaterial.color.setHex(0xff0000);
+    monitor.material = new THREE.MeshBasicMaterial({
+        map: monitorTexture,
+    });;
+}
+
+
+function desligarPC() {
+    ledPowerPCRectAreaLight.visible = false;
+    ledMonitorRectAreaLight.visible = false;
+    ledGabineteRectAreaLight.visible = false;
+    powerPCMaterial.color.setHex(0x0f0000);
+    monitor.material = new THREE.MeshBasicMaterial({
+        color: 0x000000
+    });;
+}
+
+
+
+// --- OBJETOS COM ANIMAÇÃO --- //
+
+// Livro
+const bookTexture = textureLoader.load("textures/manifesto.jpg");
+bookTexture.minFilter = THREE.LinearFilter;
+const bookMeshMaterial = new THREE.MeshStandardMaterial({ map: bookTexture });
+
+const bookGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.1);
+const book = new THREE.Mesh(bookGeometry, bookMeshMaterial);
+book.position.copy(mesaTop.position);
+book.position.y = 0.25;
+book.position.x = -1.5;
+book.position.z = -0.9;
+book.castShadow = true;
+book.receiveShadow = true;
+scene.add(book);
+
+
+pane
+    .addInput(pointLightLampadaTeto, "visible", {
+        label: "Iniciar festa vermelha",
+    })
+    .on("change", (ev) => {
+        if (ev.value) {
+            ligarPC()
+            iniciarFesta();
+        } else {
+            pararFesta();
+        }
+    });
+
+// Animação do livro simulando ele voando e voltabdo para a mesa
+const bookAnimation = gsap.timeline({ yoyo: true, repeat: -1 });
+let lampadaPiscandoInterval = null;
+function iniciarFesta() {
+    reproduzirHino()
+    bookAnimation.to(book.position, {
+        duration: 1,
+        y: 1,
+        ease: "power1.inOut",
+    });
+    bookAnimation.to(book.position, {
+        duration: 3,
+        z: 2,
+        ease: "power1.inOut",
+    });
+
+    // Fazer ele rodar em seu eixo y
+    bookAnimation.to(book.rotation, {
+        duration: 1,
+        y: Math.PI * 2,
+        ease: "power1.inOut",
+    })
+
+    if (!bookAnimation.isActive()) {
+        bookAnimation.restart();
+    }
+
+    // Mudando textura das paredes e do monitor
+    const sovieticTexture = textureLoader.load("textures/parede_uniao.jpg");
+    const sovieticTextureMaterial = new THREE.MeshBasicMaterial({
+        map: sovieticTexture,
+    })
+    sovieticTextureMaterial.minFilter = THREE.LinearFilter;
+
+    const monitorSoviectTexture = textureLoader.load("textures/wallpaper_uniao.jpg");
+    const monitorTextureMaterial = new THREE.MeshBasicMaterial({
+        map: monitorSoviectTexture,
+    })
+    monitorTextureMaterial.minFilter = THREE.LinearFilter;
+
+    monitor.material = monitorTextureMaterial
+
+    wall1.material = sovieticTextureMaterial
+    wall2.material = sovieticTextureMaterial
+    wall3.material = sovieticTextureMaterial
+    wall4.material = sovieticTextureMaterial
+
+    lampadaPiscandoInterval = setInterval(mudarIntensidadeDaLampadaDoQuarto, 1000);
+
+}
+
+function mudarIntensidadeDaLampadaDoQuarto() {
+    pointLightLampadaTeto.color.setHex(0xff0000);
+    if (pointLightLampadaTeto.intensity === 0) {
+        pointLightLampadaTeto.intensity = 0.5;
+    } else {
+        pointLightLampadaTeto.intensity = 0;
+    }
+}
+
+function pararFesta() {
+    clearInterval(lampadaPiscandoInterval);
+    pauserHino()
+    pointLightLampadaTeto.intensity = 1;
+    pointLightLampadaTeto.color.setHex(0xff9000);
+    book.position.x = -1.5;
+    book.position.y = 0.25;
+    book.position.z = -0.9;
+    book.rotation.y = 0;
+
+    if (bookAnimation.isActive()) {
+        bookAnimation.clear();
+    }
+
+    // Mudando textura das paredes e do monitor
+    wall1.material = wallMaterial
+    wall2.material = wallMaterial
+    wall3.material = wallMaterial
+    wall4.material = wallMaterial
+
+    desligarPC()
+}
+
+// Tocar hino da união soviética
+async function reproduzirHino() {
+    const audio = await document.getElementsByTagName('audio')[0]
+    audio.volume = 1
+
+    audio.play()
+}
+
+// Pausar hino da união soviética
+async function pauserHino() {
+    const audio = await document.getElementsByTagName('audio')[0]
+    audio.pause()
+}
 
 /**
  * Sizes
