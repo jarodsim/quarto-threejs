@@ -139,7 +139,7 @@ pointLightLampadaTeto.shadow.radius = 5;
 
 // Geometria da esfera da lâmpada do teto
 const lampadaGeometry = new THREE.SphereGeometry(0.05, 16, 16);
-const lampadaQuartoMaterial = new THREE.MeshPhongMaterial({ color: 0xff9000 });
+const lampadaQuartoMaterial = new THREE.MeshPhongMaterial({ color: corLâmpadaQuartoDesligada });
 
 const lampadaQuartoMesh = new THREE.Mesh(
     lampadaGeometry,
