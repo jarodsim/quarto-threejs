@@ -53,7 +53,7 @@
       id="loading"
     >
       CARREGANDO MODELOS E TEXTURAS
-      <small id="mensagem"></small>
+      <small id="mensagem">Ligue as luzes</small>
       <div class="custom-loader"></div>
       <div id="audioContainer">
         <audio
@@ -77,7 +77,7 @@
       "Experimente 'Festa vermelha'",
     ];
 
-    const interval = setInterval(exibirMensagemAleatoria, 100);
+    const interval = setInterval(exibirMensagemAleatoria, 1000);
 
     function exibirMensagemAleatoria() {
       if (document.getElementById("loading").style.display === "none") {
