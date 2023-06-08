@@ -755,6 +755,49 @@ async function pauserHino() {
     audio.pause()
 }
 
+// ---- Animação de chuva ---- //
+// criando a geometria da gota
+const rainDropGeometry = new THREE.SphereGeometry(0.01, 32, 32);
+const rainDropMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+
+// criando varias gotas
+const rainDrops = [];
+for (let i = 0; i < 500; i++) {
+    const rainDrop = new THREE.Mesh(rainDropGeometry, rainDropMaterial);
+    rainDrop.position.x = Math.random() * (2.5 - (-7.5)) + (-7.5);
+    rainDrop.position.y = Math.random() * 15;
+    rainDrop.position.z = Math.random() * (8.5 - (-1.5)) + (-1.5);
+
+
+    gsap.to(rainDrop.position, {
+        duration: Math.random() * 5 + 5,
+        y: -5,
+        ease: "power1.inOut",
+        repeat: -1,
+    })
+
+    rainDrop.visible = false;
+
+    rainDrops.push(rainDrop);
+    scene.add(rainDrop);
+}
+
+pane.addInput(rainDrops[0], "visible", {
+    label: "Chuva",
+}).on("change", (ev) => {
+    if (ev.value) {
+        rainDrops.forEach((drop) => {
+            drop.visible = true;
+            document.getElementsByTagName('audio')[1].play()
+        });
+    } else {
+        rainDrops.forEach((drop) => {
+            drop.visible = false;
+            document.getElementsByTagName('audio')[1].pause()
+        });
+    }
+});
+
 /**
  * Sizes
  */
