@@ -17,7 +17,7 @@ const textureLoader = new THREE.TextureLoader();
 const corLâmpadaQuartoLigada = 0xff9000;
 const corLâmpadaQuartoDesligada = 0x000000;
 
-let loadingStatus = 3;
+let loadingStatus = 4;
 
 const PARAMS = {
     visible: false,
@@ -262,7 +262,7 @@ groundTexture.minFilter = THREE.LinearFilter;
 const groundScreenmaterial = new THREE.MeshBasicMaterial({
     map: groundTexture,
 });
-ground.material = groundScreenmaterial;
+// ground.material = groundScreenmaterial;
 
 // Paredes
 const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
@@ -433,6 +433,12 @@ const traveseiroScreenmaterial = new THREE.MeshBasicMaterial({
 travesseio1.material = traveseiroScreenmaterial;
 travesseio2.material = traveseiroScreenmaterial;
 
+travesseio1.castShadow = true;
+travesseio2.castShadow = true;
+
+travesseio1.receiveShadow = true;
+travesseio2.receiveShadow = true;
+
 // Objetos importados
 const gltfLoader = new GLTFLoader();
 
@@ -448,6 +454,13 @@ gltfLoader.load(
         scene.add(keyboard);
 
         loadingStatus -= 1;
+
+        keyboard.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        })
 
         if (loadingStatus === 0) {
             document.getElementById("loading").style.display = "none";
@@ -477,6 +490,13 @@ gltfLoader.load(
 
         loadingStatus -= 1;
 
+        mouse.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        })
+
         if (loadingStatus === 0) {
             document.getElementById("loading").style.display = "none";
         }
@@ -502,7 +522,15 @@ gltfLoader.load(
         cadeira.position.y = -7.45;
         cadeira.position.z = 2.3;
         cadeira.rotation.z = Math.PI + 0.2;
+
         scene.add(cadeira);
+
+        cadeira.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        })
 
         loadingStatus -= 1;
 
@@ -519,6 +547,46 @@ gltfLoader.load(
         console.log(error);
     }
 );
+
+// Gatinho miau
+gltfLoader.load(
+    "/models/Gato/scene.gltf",
+    (gltf) => {
+        console.log("success");
+        console.log(gltf);
+        const gatoMiau = gltf.scene.children[0];
+        gatoMiau.scale.set(0.03, 0.03, 0.03);
+        gatoMiau.position.x = -0.7;
+        gatoMiau.position.y = 0.02;
+        gatoMiau.position.z = 0.75;
+        gatoMiau.rotation.z = -2;
+        gatoMiau.castShadow = true;
+        gatoMiau.receiveShadow = true;
+        scene.add(gatoMiau);
+
+        loadingStatus -= 1;
+
+        gatoMiau.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        })
+
+        if (loadingStatus === 0) {
+            document.getElementById("loading").style.display = "none";
+        }
+    },
+    (progress) => {
+        console.log("progress");
+        console.log(progress);
+    },
+    (error) => {
+        console.log("error");
+        console.log(error);
+    }
+);
+
 
 // Lógica para ligar e desligar o PC e Monitor
 pane
