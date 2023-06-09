@@ -44,5 +44,13 @@ Em suma, o projeto foi uma excelente oportunidade para os estudantes de computa�
   * source:	https://sketchfab.com/3d-models/mouse-razer-deathadder-783913c7b9df441ab99ec666eee4e052
   * author:	gimora (https://sketchfab.com/gimora)
 
+### Fontes de luz
+* Luz Ambiente: é uma luz suave que ilumina toda a cena.
+* Luz do Sol: é uma luz direcional que simula a luz do sol. Ela possui sombras e está posicionada em uma direção específica.
+* Lâmpada do Teto: é uma luz pontual que representa uma lâmpada no teto. Ela também possui sombras.
+* Led do Gabinete: são luzes retangulares que representam LEDs no gabinete do computador. Elas não possuem sombras.
+* Led do Power do PC: é uma luz retangular que representa o LED do botão de power do computador. Ela não possui sombras.
+* Led do Monitor: são luzes retangulares que representam LEDs no monitor. Elas não possuem sombras.
+
 ### Imagens
 
