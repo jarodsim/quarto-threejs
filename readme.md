@@ -53,4 +53,9 @@ Em suma, o projeto foi uma excelente oportunidade para os estudantes de computa�
 * Led do Monitor: são luzes retangulares que representam LEDs no monitor. Elas não possuem sombras.
 
 ### Imagens
-
+![Alt text](static/readme/01.png?raw=true "Title")
+![Alt text](static/readme/02.png?raw=true "Title")
+![Alt text](static/readme/03.png?raw=true "Title")
+![Alt text](static/readme/04.png?raw=true "Title")
+![Alt text](static/readme/05.png?raw=true "Title")
+![Alt text](static/readme/06.png?raw=true "Title")
